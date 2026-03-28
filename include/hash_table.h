@@ -1,8 +1,10 @@
 #pragma once
+#include <string>
+using namespace std;
 
 typedef struct {
-  char *key;
-  char *value;
+  string *key;
+  string *value;
 } ht_item;
 
 class HashTable {
@@ -13,7 +15,7 @@ class HashTable {
  
     static ht_item DELETED_ITEM;
 
-    ht_item *new_item(const char *key, const char *value);
+    ht_item *new_item(string *key, string *value);
     void del_item(ht_item *item);
     
     public:
@@ -23,6 +25,6 @@ class HashTable {
     // Desctructor
     ~HashTable();
 
-    void *insert(const char *key, const char *value);
+    void *insert(string *key, string *value);
     void remove(ht_item *item);
 };

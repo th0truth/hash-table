@@ -1,14 +1,17 @@
 #include "hash_table.h"
+#include <string>
 #include <cstring>
+#include <cstdint>
+using namespace std;
 
 ht_item HashTable::DELETED_ITEM = {nullptr, nullptr}; 
 
-ht_item *HashTable::new_item(const char *key, const char *value)
+ht_item *HashTable::new_item(string *key, string *value)
 {
   // Allocate an item
   ht_item *item = new ht_item;
-  item->key = strdup(key);
-  item->value = strdup(value);
+  item->key = key;
+  item->value = value;
   return item;  
 }
 
