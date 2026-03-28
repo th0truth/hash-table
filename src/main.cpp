@@ -6,12 +6,19 @@ int main(void)
 {
   HashTable ht;
 
-  ht.insert("apple", "green");
-  string *result = ht.search("apple"); 
-  if (result != nullptr) {
-    cout << "Apple is " << *result << endl;
-  } else {
-    cout << "Apple not found" << endl;
+  // Create
+  ht.insert("user", "Oliver James Hartley");
+
+  // Update
+  ht.insert("user", "Charlotte Mae Pennington");
+
+  string *user_str = ht.search("user"); 
+  if (user_str) {
+    cout << "User: " << *user_str << endl;
   }
-  return 0;
+
+  for (int i = 0; i < 50; i++) {
+    ht.insert(string("key_") + to_string(i), string("value") + to_string(i));
+  }
+  cout << "HashTable grew to " << (53 * 2) << " buckets automatically." << endl;
 }
