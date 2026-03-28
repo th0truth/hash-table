@@ -23,7 +23,7 @@ NanoKV provides a robust implementation of a dynamically resizing hash table, ut
 Clone the repository and compile the source code using the provided Makefile:
 
 ```bash
-git clone https://github.com/username/nanokv.git
+git clone https://github.com/th0truth/nanokv.git
 cd nanokv
 
 make clean
