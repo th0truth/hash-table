@@ -2,11 +2,12 @@
 #include <string>
 #include <cstring>
 #include <cstdint>
+#include <cmath>
 using namespace std;
 
 ht_item HashTable::DELETED_ITEM = {nullptr, nullptr}; 
 
-ht_item *HashTable::new_item(string *key, string *value)
+ht_item *HashTable::new_item(string &key, string &value)
 {
   // Allocate an item
   ht_item *item = new ht_item;
@@ -18,8 +19,6 @@ ht_item *HashTable::new_item(string *key, string *value)
 void HashTable::del_item(ht_item *item)
 {
   if (item != nullptr && item != &DELETED_ITEM) {
-    delete[] item->key;
-    delete[] item->value;
     delete item;
   }
 }
@@ -44,4 +43,15 @@ HashTable::~HashTable(void)
 
   // Delete the array of pointers
   delete[] this->items;
+}
+
+static int32_t ht_hash(string s, const int a, const int m)
+{
+  int64_t hash = 0;
+  const int len_s = s.size();
+  for (int i = 0; i < len_s; i++) {
+    hash += (int64_t)pow(a, len_s - (i+1)) * s[i];
+    hash = hash % m;
+  }
+  return (int32_t)hash;
 }
