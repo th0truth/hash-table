@@ -1,21 +1,30 @@
 #pragma once
 #include <string>
-using namespace std;
+
+#define HT_INITIAL_BASE_SIZE 50
 
 typedef struct {
-  string key;
-  string value;
+  std::string key;
+  std::string value;
 } ht_item;
 
 class HashTable {
   private:
+    int32_t base_size;
+
+    HashTable(int32_t size);
+    
+    void resize(const int32_t base_size);
+    void resize_up();
+    void resize_down();
+
     int32_t size;
     int32_t count;
     ht_item **items;
  
     static ht_item DELETED_ITEM;
 
-    ht_item *new_item(string &key, string &value);
+    ht_item *new_item(const std::string &key, const std::string &value);
     void del_item(ht_item *item);
     
     public:
@@ -25,8 +34,8 @@ class HashTable {
     // Desctructor
     ~HashTable();
 
-    string *search(string key);
-    void insert(string key, string value);
-    void remove(string key);
+    std::string *search(const std::string &key);
+    void insert(const std::string &key, const std::string &value);
+    void remove(const std::string &key);
 
 };
