@@ -44,6 +44,7 @@ NanoKV includes an interactive command-line interface. You can specify the stora
 | `./build/nanokv CHAINING` | **Chaining** | Handles high load factors gracefully. |
 | `./build/nanokv LIST` | **Singly Linked List** | O(N) search, simple linked structure. |
 | `./build/nanokv DOUBLE_LIST` | **Doubly Linked List** | Bi-directional traversal. |
+| `./build/nanokv CIRCULAR_LIST` | **Circular Linked List** | Last node points back to head. |
 
 ### Data Representation
 
@@ -55,6 +56,7 @@ Here is how different strategies represent your data internally when using the `
 | **CHAINING** | `[0]: {k: "a", v: "1"} -> {k: "b", v: "2"} -> NULL, [1]: (null), ...` |
 | **LIST** | `[id: 101] -> [name: Alice] -> NULL` |
 | **DOUBLE_LIST** | `[id: 101] <-> [name: Alice] <-> NULL` |
+| **CIRCULAR_LIST** | `[id: 101] -> [name: Alice] -> (HEAD)` |
 
 ### Interactive Shell Commands
 
