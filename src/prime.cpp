@@ -21,3 +21,11 @@ int32_t is_prime(const int32_t x)
   }
   return 1;
 }
+
+int32_t next_prime(int32_t x)
+{
+  while (is_prime(x) != 1) {
+    x++;
+  }
+  return x;
+}
