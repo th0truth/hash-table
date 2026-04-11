@@ -1,25 +1,27 @@
 #pragma once
 #include <string>
 
-struct Node
-{
+struct DLLNode {
   std::string key;
   std::string value;
-  Node *next;
+  DLLNode *prev;
+  DLLNode *next;
 };
 
-class SinglyLinkedList
-{
+class DoublyLinkedList {
   private:
-    Node *head;
+    DLLNode *head;
+    DLLNode *tail;
 
   public:
-    SinglyLinkedList();
-    ~SinglyLinkedList();
-    
+    DoublyLinkedList();
+    ~DoublyLinkedList();
+
     void insert(const std::string& key, const std::string& value);
     void remove(const std::string& key);
-    std::string* search(const std::string& key);
     void display(const std::string& msg = "");
+    void displayReverse(const std::string& msg = "");
+    std::string* search(const std::string& key);
+
     bool isEmpty();
 };
