@@ -3,18 +3,21 @@
 
 #define HT_INITIAL_BASE_SIZE 50
 
-enum class ProbingStrategy {
+enum class ProbingStrategy
+{
   LINEAR,
   QUADRATIC,
   DOUBLE_HASHING
 };
 
-typedef struct {
+typedef struct
+{
   std::string key;
   std::string value;
 } ht_item;
 
-class HashTable {
+class HashTable
+{
   private:
     int32_t base_size;
 
@@ -49,5 +52,4 @@ class HashTable {
     void remove(const std::string &key);
 
     void display(const std::string msg = "Hash Table contents");
-
 };

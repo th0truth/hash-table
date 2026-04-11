@@ -21,14 +21,3 @@ int32_t is_prime(const int32_t x)
   }
   return 1;
 }
-
-/*
- * Return the next prime after x, or x if x is prime
- */
-int32_t next_prime(int x)
-{
-  while (is_prime(x) != 1) {
-    x++;
-  }
-  return x;
-}
