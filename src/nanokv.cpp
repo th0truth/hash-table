@@ -6,6 +6,7 @@
 #include "singly_linked_list.h"
 #include "doubly_linked_list.h"
 #include "circular_linked_list.h"
+#include "stack.h"
 
 using namespace std;
 
@@ -48,12 +49,56 @@ void run_repl(T& db) {
   }
 }
 
+template <typename T>
+void run_stack_repl(Stack<T>& stack) {
+  string command, value;
+
+  cout << "=== NanoKV (Stack Mode) ===\n";
+  cout << "Commands: PUSH <value> | POP | TOP | SIZE | DISPLAY | EXIT\n\n";
+
+  while (true) {
+    cout << "stack> ";
+    if (!(cin >> command)) break;
+
+    if (command == "EXIT" || command == "exit") {
+      break;
+    } else if (command == "PUSH" || command == "push") {
+      cin >> value;
+      if (stack.push(value)) {
+        cout << "OK\n";
+      } else {
+        cout << "Error: Stack is full\n";
+      }
+    } else if (command == "POP" || command == "pop") {
+      if (stack.pop()) {
+        cout << "OK\n";
+      } else {
+        cout << "Error: Stack is empty\n";
+      }
+    } else if (command == "TOP" || command == "top") {
+      if (!stack.isEmpty()) {
+        cout << "\"" << stack.top() << "\"\n";
+      } else {
+        cout << "(empty)\n";
+      }
+    } else if (command == "SIZE" || command == "size") {
+      cout << stack.size() << " / " << stack.getCapacity() << "\n";
+    } else if (command == "DISPLAY" || command == "display") {
+      stack.display("Current Stack State:");
+    } else {
+      cout << "Error: Unknown command '" << command << "'\n";
+      cin.ignore(10000, '\n');  // clear line
+    }
+  }
+}
+
 int main(int argc, char **argv) {
   ProbingStrategy strategy = ProbingStrategy::DOUBLE_HASHING; 
   bool use_chaining = false;
   bool use_list = false;
   bool use_double_list = false;
   bool use_circular_list = false;
+  bool use_stack = false;
 
   if (argc > 1) {
     string strat_argv = argv[1];
@@ -79,16 +124,22 @@ int main(int argc, char **argv) {
     } else if (strat_argv == "CIRCULAR_LIST") {
       use_circular_list = true;
       cout << "Using strategy: CIRCULAR LINKED LIST\n" << endl;
+    } else if (strat_argv == "STACK") {
+      use_stack = true;
+      cout << "Using strategy: STACK\n" << endl;
     } else {
       cout << "Error: Unknown strategy '" << strat_argv << "'" << endl;
-      cout << "Usage: ./build/nanokv [LINEAR | QUADRATIC | DOUBLE | CHAINING | LIST | DOUBLE_LIST | CIRCULAR_LIST]\n" << endl;
+      cout << "Usage: ./build/nanokv [LINEAR | QUADRATIC | DOUBLE | CHAINING | LIST | DOUBLE_LIST | CIRCULAR_LIST | STACK]\n" << endl;
       return 1;
     }
   } else {
     cout << "Using default strategy: DOUBLE HASHING\n";
   }
 
-  if (use_circular_list) {
+  if (use_stack) {
+    Stack<string> db(100);
+    run_stack_repl(db);
+  } else if (use_circular_list) {
     CircularLinkedList db;
     run_repl(db);
   } else if (use_double_list) {
