@@ -11,7 +11,7 @@ ChainingHashTable::ChainingHashTable(int32_t size)
   this->table.resize(this->num_buckets);
 }
 
-int32_t ChainingHashTable::get_hash(const string &key)
+int32_t ChainingHashTable::get_hash(const string& key)
 {
   int64_t hash = 0;
   for (char c : key) {
@@ -20,7 +20,7 @@ int32_t ChainingHashTable::get_hash(const string &key)
   return (int32_t)hash;
 }
 
-void ChainingHashTable::insert(const string &key, const string &value)
+void ChainingHashTable::insert(const string& key, const string& value)
 {
   int32_t index = get_hash(key);
   int collisions = 0;
@@ -40,7 +40,7 @@ void ChainingHashTable::insert(const string &key, const string &value)
   }
 }
 
-string *ChainingHashTable::search(const string &key)
+string *ChainingHashTable::search(const string& key)
 {
   int32_t index = get_hash(key);
     
@@ -52,7 +52,7 @@ string *ChainingHashTable::search(const string &key)
   return nullptr;
 }
 
-void ChainingHashTable::remove(const string &key)
+void ChainingHashTable::remove(const string& key)
 {
   int32_t index = get_hash(key);
     

@@ -34,10 +34,10 @@ class HashTable
  
     static ht_item DELETED_ITEM;
 
-    ht_item *new_item(const std::string &key, const std::string &value);
+    ht_item *new_item(const std::string& key, const std::string& value);
     void del_item(ht_item *item);
 
-    int32_t get_hash(const std::string &key, const int32_t num_buckets, const int32_t attempt);
+    int32_t get_hash(const std::string& key, const int32_t num_buckets, const int32_t attempt);
     
   public:
     // Constructor
@@ -47,9 +47,9 @@ class HashTable
     // Desctructor
     ~HashTable();
 
-    std::string *search(const std::string &key);
-    void insert(const std::string &key, const std::string &value);
-    void remove(const std::string &key);
+    std::string *search(const std::string& key);
+    void insert(const std::string& key, const std::string& value);
+    void remove(const std::string& key);
 
     void display(const std::string msg = "Hash Table contents");
 };

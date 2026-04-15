@@ -15,7 +15,7 @@ SinglyLinkedList::~SinglyLinkedList()
   }
 }
 
-void SinglyLinkedList::insert(const string &key, const string &value)
+void SinglyLinkedList::insert(const string& key, const string& value)
 {
   // If key already exists, update its value
   Node* curr = head;
@@ -32,7 +32,7 @@ void SinglyLinkedList::insert(const string &key, const string &value)
   head = n;
 }
 
-string *SinglyLinkedList::search(const string &key)
+string *SinglyLinkedList::search(const string& key)
 {
   Node* curr = head;
   while (curr != nullptr) {
@@ -44,7 +44,7 @@ string *SinglyLinkedList::search(const string &key)
   return nullptr;
 }
 
-void SinglyLinkedList::remove(const string &key) {
+void SinglyLinkedList::remove(const string& key) {
   if (head == nullptr) return;
 
   if (head->key == key) {
@@ -66,7 +66,7 @@ void SinglyLinkedList::remove(const string &key) {
   }
 }
 
-void SinglyLinkedList::display(const string &msg) {
+void SinglyLinkedList::display(const string& msg) {
   if (!msg.empty()) {
     cout << msg << endl;
   }

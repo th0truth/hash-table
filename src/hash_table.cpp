@@ -22,7 +22,7 @@ static int32_t ht_hash(string s, const int a, const int m)
   return (int32_t)hash;
 }
 
-int32_t HashTable::get_hash(const string &s, const int32_t num_buckets, const int32_t attempt)
+int32_t HashTable::get_hash(const string& s, const int32_t num_buckets, const int32_t attempt)
 {
   const int32_t hash_a = ht_hash(s, 151, num_buckets);
 
@@ -36,7 +36,7 @@ int32_t HashTable::get_hash(const string &s, const int32_t num_buckets, const in
   }
 }
 
-ht_item *HashTable::new_item(const string &key, const string &value)
+ht_item *HashTable::new_item(const string& key, const string& value)
 {
   // Allocate an item
   ht_item *item = new ht_item;
@@ -53,7 +53,7 @@ void HashTable::del_item(ht_item *item)
 }
 
 // Insert a new key-value pair
-void HashTable::insert(const string &key, const string &value)
+void HashTable::insert(const string& key, const string& value)
 {
   const int32_t load = this->count * 100 / this->size;
   if (load > 70) {
@@ -91,7 +91,7 @@ void HashTable::insert(const string &key, const string &value)
   this->count++;
 }
 
-string *HashTable::search(const string &key)
+string *HashTable::search(const string& key)
 {
   int32_t index = this->get_hash(key, this->size, 0);
   ht_item *current_item = this->items[index];
@@ -109,7 +109,7 @@ string *HashTable::search(const string &key)
   return nullptr;
 }
 
-void HashTable::remove(const string &key)
+void HashTable::remove(const string& key)
 {
   const int32_t load = this->count * 100 / this->size;
   if (load < 10) {
