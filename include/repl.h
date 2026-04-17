@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <sstream>
 #include "stack.h"
 #include "queue.h"
 
@@ -8,24 +9,27 @@ using namespace std;
 template <typename T>
 void run_repl(T& db)
 {
-  string command, key, value;
+  string command, key, value, line;
 
   cout << "=== NanoKV ===\n";
   cout << "Commands: SET <key> <value> | GET <key> | DEL <key> | DISPLAY | EXIT\n\n";
 
   while (true) {
     cout << "db> ";
-    if (!(cin >> command)) break;
+    if (!getline(cin, line)) break;
+    
+    stringstream ss(line);
+    if (!(ss >> command)) continue;
 
     if (command == "EXIT" || command == "exit") {
       break;
     } else if (command == "SET" || command == "set") {
-      cin >> key;
-      getline(cin >> ws, value);
+      ss >> key;
+      getline(ss >> ws, value);
       db.insert(key, value);
       cout << "OK\n";
     } else if (command == "GET" || command == "get") {
-      cin >> key;
+      ss >> key;
       string *result = db.search(key);
       if (result) {
         cout << "\"" << *result << "\"\n";
@@ -33,14 +37,13 @@ void run_repl(T& db)
         cout << "(null)\n";
       }
     } else if (command == "DEL" || command == "del") {
-      cin >> key;
+      ss >> key;
       db.remove(key);
       cout << "OK\n";
     } else if (command == "DISPLAY" || command == "display") {
       db.display("Current State: ");
     } else {
       cout << "Error: Unknown command '" << command << "'\n";
-      cin.ignore(10000, '\n');  // clear line
     }
   }
 }
@@ -48,19 +51,22 @@ void run_repl(T& db)
 template <typename T>
 void run_stack_repl(Stack<T>& stack)
 {
-  string command, value;
+  string command, value, line;
 
   cout << "=== NanoKV (Stack Mode) ===\n";
   cout << "Commands: PUSH <value> | POP | TOP | SIZE | DISPLAY | EXIT\n\n";
 
   while (true) {
     cout << "stack> ";
-    if (!(cin >> command)) break;
+    if (!getline(cin, line)) break;
+    
+    stringstream ss(line);
+    if (!(ss >> command)) continue;
 
     if (command == "EXIT" || command == "exit") {
       break;
     } else if (command == "PUSH" || command == "push") {
-      cin >> value;
+      ss >> value;
       if (stack.push(value)) {
         cout << "OK\n";
       } else {
@@ -84,27 +90,29 @@ void run_stack_repl(Stack<T>& stack)
       stack.display("Current Stack State:");
     } else {
       cout << "Error: Unknown command '" << command << "'\n";
-      cin.ignore(10000, '\n');  // clear line
     }
   }
-};
+}
 
 template <typename T>
 void run_queue_repl(Queue<T>& queue)
 {
-  string command, value;
+  string command, value, line;
 
   cout << "=== NanoKV (Queue Mode) ===\n";
   cout << "Commands: ENQUEUE <value> | DEQUEUE | FRONT | SIZE | DISPLAY | EXIT\n\n";
 
   while (true) {
     cout << "queue> ";
-    if (!(cin >> command)) break;
+    if (!getline(cin, line)) break;
+    
+    stringstream ss(line);
+    if (!(ss >> command)) continue;
 
     if (command == "EXIT" || command == "exit") {
       break;
     } else if (command == "ENQUEUE" || command == "enqueue") {
-      cin >> value;
+      ss >> value;
       if (queue.enqueue(value)) {
         cout << "OK\n";
       } else {
@@ -128,8 +136,6 @@ void run_queue_repl(Queue<T>& queue)
       queue.display("Current Queue State:");
     } else {
       cout << "Error: Unknown command '" << command << "'\n";
-      cin.ignore(10000, '\n');  // clear line
     }
   }
 }
-
