@@ -1,68 +1,104 @@
 # NanoKV
 
-A high-performance, in-memory key-value data store implemented entirely from scratch in C++. 
+NanoKV is a C++ command-line project for exploring fundamental data-structure implementations from first principles.
 
-NanoKV provides a robust implementation of two primary hash table architectures: **Open Addressing** (with pluggable probing strategies) and **Chaining** (using linked lists). This project serves as a foundational example of low-level data structure design, manual memory management, and algorithmic optimization in modern C++.
+The repository centers on an in-memory key-value store backed by custom hash-table implementations, and also includes linked-list, stack, and queue modes exposed through a simple interactive REPL. The project is best understood as a compact systems-programming exercise focused on collision resolution, dynamic resizing, pointer-based structures, and basic container ergonomics.
 
-## Architecture & Capabilities
+## Highlights
 
-*   **Dual Collision Resolution Architectures:**
-    *   **Open Addressing:** Stores all elements directly in the hash table array.
-        *   **Double Hashing (Default):** Uses a secondary hash function for the step size to eliminate primary clustering.
-        *   **Linear Probing:** Checks sequential slots to resolve collisions.
-        *   **Quadratic Probing:** Uses a quadratic function to determine the step size, reducing primary clustering.
-    *   **Chaining:** Each bucket in the hash table contains a linked list (`std::list`) of all items that hash to the same index.
-*   **Collision Reporting (New!):** Actively monitors and reports the number of collisions/probes required for each insertion, allowing for real-time analysis of hash function efficiency.
-*   **Dynamic Auto-Resizing (Open Addressing):** Monitors the load factor and automatically resizes the underlying array (expanding at >70% load, shrinking at <10% load) to maintain optimal $O(1)$ amortized time complexity.
-*   **Prime-Sized Buckets:** Automatically calculates and enforces prime number capacities to guarantee that probe sequences can visit every available slot.
-*   **Complete CRUD Operations:** Supports fully functional Create, Read, Update, and Delete operations via an interactive shell.
-*   **RAII Memory Management:** Ensures safe memory allocation and prevents leaks during table destruction and resizing operations.
+- Open-addressing hash table with selectable probing strategies:
+  - Double hashing
+  - Linear probing
+  - Quadratic probing
+- Separate chaining hash table using `std::list`
+- Automatic resizing for the open-addressing table based on load factor
+- Prime-sized table growth to support stable probing behavior
+- Interactive CLI for insert, lookup, delete, and structure inspection
+- Additional educational implementations for:
+  - Singly linked list
+  - Doubly linked list
+  - Circular linked list
+  - Stack
+  - Queue
 
-## Building and Installation
+## Project Scope
 
-### Prerequisites
-*   A C++11 compatible compiler (e.g., `g++`, `clang++`)
-*   `make` build system
+NanoKV is an educational in-memory project, not a production database. It does not provide persistence, replication, concurrency control, durability guarantees, or a network protocol. Its value is in the implementation itself: understanding how core data structures behave under different design choices.
 
-### Compilation
-Clone the repository and compile the source code using the provided Makefile:
+## Repository Layout
+
+```text
+.
+├── include/    # Public headers
+├── src/        # Implementations and entry point
+├── build/      # Compiled binary output
+├── Makefile
+└── README.md
+```
+
+## Build
+
+### Requirements
+
+- A C++ compiler such as `g++` or `clang++`
+- `make`
+
+### Compile
 
 ```bash
 make clean
 make
 ```
 
-## Usage
+The executable is produced at `./build/nanokv`.
 
-NanoKV includes an interactive command-line interface. You can specify the storage and collision resolution strategy as a command-line argument.
+## Running NanoKV
 
-| Command | Strategy | Best For |
-| :--- | :--- | :--- |
-| `./build/nanokv DOUBLE` | **Double Hashing** (Default) | General purpose, avoids clustering. |
-| `./build/nanokv LINEAR` | **Linear Probing** | Cache performance, simple to implement. |
-| `./build/nanokv QUADRATIC` | **Quadratic Probing** | Reduces primary clustering. |
-| `./build/nanokv CHAINING` | **Chaining** | Handles high load factors gracefully. |
-| `./build/nanokv LIST` | **Singly Linked List** | O(N) search, simple linked structure. |
-| `./build/nanokv DOUBLE_LIST` | **Doubly Linked List** | Bi-directional traversal. |
-| `./build/nanokv CIRCULAR_LIST` | **Circular Linked List** | Last node points back to head. |
-| `./build/nanokv STACK` | **Stack** | LIFO (Last In, First Out) data structure. |
-| `./build/nanokv QUEUE` | **Queue** | FIFO (First In, First Out) data structure. |
+If no argument is provided, NanoKV starts in open-addressing mode with double hashing.
 
-### Data Representation
+```bash
+./build/nanokv
+```
 
-Here is how different strategies represent your data internally when using the `DISPLAY` command:
+You can also select a specific mode explicitly:
 
-| Mode | Internal Data Representation Example |
+| Command | Mode |
 | :--- | :--- |
-| **HASH TABLE** | `[0]: (null), [1]: {k: "id", v: "101"}, [2]: (null), ...` |
-| **CHAINING** | `[0]: {k: "a", v: "1"} -> {k: "b", v: "2"} -> NULL, [1]: (null), ...` |
-| **LIST** | `[id: 101] -> [name: Alice] -> NULL` |
-| **DOUBLE_LIST** | `[id: 101] <-> [name: Alice] <-> NULL` |
-| **CIRCULAR_LIST** | `[id: 101] -> [name: Alice] -> (HEAD)` |
-| **STACK** | `[1]: World <- TOP, [0]: Hello` |
-| **QUEUE** | `[0]: 10 <- FRONT, [1]: 20 <- BACK` |
+| `./build/nanokv DOUBLE` | Open addressing with double hashing |
+| `./build/nanokv LINEAR` | Open addressing with linear probing |
+| `./build/nanokv QUADRATIC` | Open addressing with quadratic probing |
+| `./build/nanokv CHAINING` | Hash table with separate chaining |
+| `./build/nanokv LIST` | Singly linked list |
+| `./build/nanokv DOUBLE_LIST` | Doubly linked list |
+| `./build/nanokv CIRCULAR_LIST` | Circular linked list |
+| `./build/nanokv STACK` | Stack |
+| `./build/nanokv QUEUE` | Queue |
 
-### Interactive Shell Commands
+## CLI Usage
+
+### Key-Value Modes
+
+Available in:
+
+- `DOUBLE`
+- `LINEAR`
+- `QUADRATIC`
+- `CHAINING`
+- `LIST`
+- `DOUBLE_LIST`
+- `CIRCULAR_LIST`
+
+Commands:
+
+```text
+SET <key> <value>
+GET <key>
+DEL <key>
+DISPLAY
+EXIT
+```
+
+Example:
 
 ```text
 === NanoKV ===
@@ -71,19 +107,31 @@ Commands: SET <key> <value> | GET <key> | DEL <key> | DISPLAY | EXIT
 db> SET user:1 Alice
 OK
 db> SET user:2 Bob
-[Probe Info] Inserted 'user:2' after resolving 1 collisions.
 OK
-db> DISPLAY
-Current Hash Table State: (Count: 2, Size: 53)
-...
 db> GET user:1
 "Alice"
-db> DEL user:1
+db> DISPLAY
+Current State:
+...
+db> DEL user:2
 OK
 db> EXIT
 ```
 
-### Stack Mode Commands
+### Stack Mode
+
+Commands:
+
+```text
+PUSH <value>
+POP
+TOP
+SIZE
+DISPLAY
+EXIT
+```
+
+Example:
 
 ```text
 === NanoKV (Stack Mode) ===
@@ -93,18 +141,29 @@ stack> PUSH Hello
 OK
 stack> PUSH World
 OK
+stack> TOP
+"World"
 stack> DISPLAY
+Current Stack State:
 Stack (Top to Bottom):
   [1]: World <- TOP
   [0]: Hello
-stack> TOP
-"World"
-stack> POP
-OK
-stack> EXIT
 ```
 
-### Queue Mode Commands
+### Queue Mode
+
+Commands:
+
+```text
+ENQUEUE <value>
+DEQUEUE
+FRONT
+SIZE
+DISPLAY
+EXIT
+```
+
+Example:
 
 ```text
 === NanoKV (Queue Mode) ===
@@ -114,23 +173,38 @@ queue> ENQUEUE Hello
 OK
 queue> ENQUEUE World
 OK
+queue> FRONT
+"Hello"
 queue> DISPLAY
+Current Queue State:
 Queue (Front to Back):
   [0]: Hello <- FRONT
   [1]: World <- BACK
-queue> FRONT
-"Hello"
-queue> DEQUEUE
-OK
-queue> EXIT
 ```
 
-## Integration Example
+## Implementation Notes
 
-NanoKV can be integrated directly into other C++ projects.
+### Open Addressing
+
+The open-addressing hash table stores items directly in the table array and resolves collisions through probe sequences. The implementation supports:
+
+- load-factor-driven growth and shrink operations
+- tombstone handling for deletions
+- switchable probing strategies through `ProbingStrategy`
+
+### Chaining
+
+The chaining variant maps each bucket to a linked list of entries, which simplifies deletion semantics and handles collisions differently from the open-addressing implementation.
+
+### Auxiliary Structures
+
+The linked lists, stack, and queue are included as standalone implementations for comparison and practice. They are exposed through the same executable to keep the project easy to explore from a terminal.
+
+## Example Integration
+
+NanoKV’s components can also be used directly in C++ code.
 
 ```cpp
-#include <iostream>
 #include <string>
 #include "hash_table.h"
 #include "chaining_hash_table.h"
@@ -138,22 +212,30 @@ NanoKV can be integrated directly into other C++ projects.
 #include "queue.h"
 
 int main() {
-  // Option 1: Open Addressing (Double Hashing)
-  HashTable db_open(ProbingStrategy::DOUBLE_HASHING);
-  db_open.insert("type", "open_addressing");
+  HashTable open_table(ProbingStrategy::DOUBLE_HASHING);
+  open_table.insert("language", "C++");
 
-  // Option 2: Chaining
-  ChainingHashTable db_chain(50);
-  db_chain.insert("type", "chaining");
+  ChainingHashTable chained_table(50);
+  chained_table.insert("mode", "chaining");
 
-  // Option 3: Stack
-  Stack<std::string> my_stack(100);
-  my_stack.push("Hello");
+  Stack<std::string> stack(16);
+  stack.push("alpha");
 
-  // Option 4: Queue
-  Queue<std::string> my_queue(100);
-  my_queue.enqueue("Hello");
+  Queue<std::string> queue(16);
+  queue.enqueue("beta");
 
   return 0;
 }
 ```
+
+## Current Limitations
+
+- No automated test suite yet
+- No persistence layer or on-disk format
+- No concurrency support
+- No benchmarking harness
+- Build configuration is intentionally minimal
+
+## License
+
+This project is available under the [MIT License](LICENSE).
