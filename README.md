@@ -11,6 +11,10 @@ The repository centers on an in-memory key-value store backed by custom hash-tab
   - Linear probing
   - Quadratic probing
 - Separate chaining hash table using `std::list`
+- Tree-backed key-value modes:
+  - Binary search tree (BST)
+  - AVL tree
+  - Trie
 - Automatic resizing for the open-addressing table based on load factor
 - Prime-sized table growth to support stable probing behavior
 - Interactive CLI for insert, lookup, delete, and structure inspection
@@ -73,6 +77,9 @@ You can also select a specific mode explicitly:
 | `./build/nanokv CIRCULAR_LIST` | Circular linked list |
 | `./build/nanokv STACK` | Stack |
 | `./build/nanokv QUEUE` | Queue |
+| `./build/nanokv BST` | Binary search tree (KV store) |
+| `./build/nanokv AVL` | AVL tree (KV store) |
+| `./build/nanokv TRIE` | Trie (KV store) |
 
 ## CLI Usage
 
@@ -87,6 +94,9 @@ Available in:
 - `LIST`
 - `DOUBLE_LIST`
 - `CIRCULAR_LIST`
+- `BST`
+- `AVL`
+- `TRIE`
 
 Commands:
 
@@ -116,6 +126,17 @@ Current State:
 db> DEL user:2
 OK
 db> EXIT
+```
+
+`DISPLAY` prints a simple tree view for tree-backed modes (BST/AVL/TRIE), for example:
+
+```text
+db> DISPLAY
+Current State:
+\-- [30: a]
+    |-- [20: b]
+    |   \-- [10: d]
+    \-- [40: c]
 ```
 
 ### Stack Mode
