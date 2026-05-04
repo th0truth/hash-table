@@ -8,6 +8,9 @@
 #include "circular_linked_list.h"
 #include "stack.h"
 #include "repl.h"
+#include "binary_search_tree.h"
+#include "avl_tree.h"
+#include "trie_tree.h"
 
 using namespace std;
 
@@ -20,6 +23,9 @@ int main(int argc, char **argv)
   bool use_circular_list = false;
   bool use_stack = false;
   bool use_queue = false;
+  bool use_bst = false;
+  bool use_avl = false;
+  bool use_trie = false;
 
   if (argc > 1) {
     string strat_argv = argv[1];
@@ -51,9 +57,18 @@ int main(int argc, char **argv)
     } else if (strat_argv == "QUEUE") {
       use_queue = true;
       cout << "Using strategy: QUEUE\n" << endl;
+    } else if (strat_argv == "BST") {
+      use_bst = true;
+      cout << "Using strategy: BINARY SEARCH TREE\n" << endl;
+    } else if (strat_argv == "AVL") {
+      use_avl = true;
+      cout << "Using strategy: AVL TREE\n" << endl;
+    } else if (strat_argv == "TRIE") {
+      use_trie = true;
+      cout << "Using strategy: TRIE TREE\n" << endl;
     } else {
       cout << "Error: Unknown strategy '" << strat_argv << "'" << endl;
-      cout << "Usage: ./build/nanokv [LINEAR | QUADRATIC | DOUBLE | CHAINING | LIST | DOUBLE_LIST | CIRCULAR_LIST | STACK | QUEUE]\n" << endl;
+      cout << "Usage: ./build/nanokv [LINEAR | QUADRATIC | DOUBLE | CHAINING | LIST | DOUBLE_LIST | CIRCULAR_LIST | STACK | QUEUE | BST | AVL | TRIE]\n" << endl;
       return 1;
     }
   } else {
@@ -66,6 +81,15 @@ int main(int argc, char **argv)
   } else if (use_queue) {
     Queue<string> db(100);
     run_queue_repl(db);
+  } else if (use_trie) {
+    TrieTree db;
+    run_repl(db);
+  } else if (use_avl) {
+    AVLTree db;
+    run_repl(db);
+  } else if (use_bst) {
+    BinarySearchTree db;
+    run_repl(db);
   } else if (use_circular_list) {
     CircularLinkedList db;
     run_repl(db);
